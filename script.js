@@ -141,5 +141,4 @@ setInterval(() => {
   const timeFixed = timeSpent.toFixed(0);
 
   document.getElementById("show-time").innerHTML = `${startTime ? timeFixed : 0} seconds`;
-  count.value = '';
 }, 1000);
