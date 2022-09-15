@@ -46,6 +46,9 @@ const typeController = (e) => {
     display.innerHTML += `<span class="green">${newLetter === " " ? "▪" : newLetter}</span>`;
   } else {
     display.innerHTML += `<span class="red">${newLetter === " " ? "▪" : newLetter}</span>`;
+    errorCount++;
+    return;
+
   }
 
   // check if given question text is equal to user typed text
@@ -68,6 +71,7 @@ const gameOver = () => {
   // so total time taken is current time - start time
   const finishTime = new Date().getTime();
   const timeTaken = (finishTime - startTime) / 1000;
+  const timeFixed2 = timeTaken.toFixed(0);
 
   // show result modal
   resultModal.innerHTML = "";
@@ -80,12 +84,12 @@ const gameOver = () => {
   // show result
   resultModal.innerHTML += `
     <h1>Finished!</h1>
-    <p>You took: <span class="bold">${timeTaken}</span> seconds</p>
+    <p>You took: <span class="bold">${timeFixed2}</span> seconds</p>
     <p>You made <span class="bold red">${errorCount}</span> mistakes</p>
     <button onclick="closeModal()">Close</button>
   `;
 
-  addHistory(questionText, timeTaken, errorCount);
+  addHistory(questionText, timeFixed2, errorCount);
 
   // restart everything
   startTime = null;
@@ -113,12 +117,13 @@ const start = () => {
     if (count == 0) {
       // -------------- START TYPING -----------------
       document.addEventListener("keydown", typeController);
-      countdownOverlay.style.display = "flex";
+      countdownOverlay.style.display = "none";
       display.classList.remove("inactive");
 
       clearInterval(startCountdown);
       startTime = new Date().getTime();
     }
+
     count--;
   }, 1000);
 };
@@ -133,7 +138,8 @@ displayHistory();
 setInterval(() => {
   const currentTime = new Date().getTime();
   const timeSpent = (currentTime - startTime) / 1000;
+  const timeFixed = timeSpent.toFixed(0);
 
-
-  document.getElementById("show-time").innerHTML = `${startTime ? timeSpent : 0} seconds`;
+  document.getElementById("show-time").innerHTML = `${startTime ? timeFixed : 0} seconds`;
+  count.value = '';
 }, 1000);
